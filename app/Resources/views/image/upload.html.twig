@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block body_id 'image' %}
+
+{% block main %}
+    <div class="container body-content span=8 offset=2">
+        <div class="well">
+            <form enctype="multipart/form-data" class="form-horizontal" action="{{ path('image_upload') }}" method="post">
+                <fieldset>
+                    <legend>Upload Image</legend>
+                    {{ form_row(form.image) }}
+                    <div class="form-group">
+                        <div class="col-sm-4 col-sm-offset-4">
+                            <a class="btn btn-default" href="{{ path('gallery_index') }}">Cancel</a>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </div>
+                    {{  form_row(form._token) }}
+                </fieldset>
+            </form>
+        </div>
+    </div>
+{% endblock %}

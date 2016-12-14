@@ -1,0 +1,3 @@
+app:
+    resource: "@ArtGalleryBundle/Controller/"
+    type:     annotation

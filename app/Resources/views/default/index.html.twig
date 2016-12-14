@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+    <div class="container body-content">
+        <div class="row">
+            {% for image in image %}
+                <div class="col-md-4">
+                    <article>
+                        <header><a data-toggle="modal" data-target="#myModal">
+                                <img class="img-thumbnail" src="{{ asset('uploads/images/' ~ image.image) }}"/>
+                            </a>
+                        </header>
+                    </article>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}
