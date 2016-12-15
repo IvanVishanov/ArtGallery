@@ -28,19 +28,31 @@ class Image
      *
      * @ORM\Column(name="image", type="string", length=255)
      *
-     * @Assert\File(mimeTypes={ "image/png" })
+     * @Assert\File(mimeTypes={ "image/x-icon" })
      */
     private $image;
+
     /**
-     * @var int;
-     * @ORM\Column(name="author",type"integer")
+     * @var int
+     *
+     * @ORM\Column(name="author", type="integer")
      */
     private $author;
+
     /**
-     * Get id
+     * @var boolean
      *
-     * @return int
+     * @ORM\Column(name="approved", type="boolean")
      */
+    private $approved;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="deleted", type="boolean")
+     */
+    private $deleted;
+
     public function getId()
     {
         return $this->id;
@@ -84,6 +96,39 @@ class Image
     public function setAuthor(int $author)
     {
         $this->author = $author;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isApproved()
+    {
+        return $this->approved;
+    }
+
+    /**
+     * @param boolean $approved
+     */
+    public function setApproved(bool $approved)
+    {
+        $this->approved = $approved;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isDeleted()
+    {
+        return $this->deleted;
+    }
+
+    /**
+     * @param boolean $deleted
+     */
+    public function setDeleted(bool $deleted)
+    {
+        $this->deleted = $deleted;
     }
 
 }

@@ -1,10 +1,14 @@
 {% extends 'base.html.twig' %}
 
+{% block body_id %}
+
+{% endblock %}
+
 {% block main %}
     <div class="container body-content">
         <div class="row">
             {% for image in images %}
-                {% if image.approved and image.deleted == false %}
+                {% if image.approved == false and image.deleted == false %}
                     <div class="col-md-4 text-center">
                         <table class="table table-bordered">
                             <tr>
@@ -14,6 +18,14 @@
                             </tr>
                             <tr>
                                 <td><img src="{{ asset('uploads/images/' ~ image.image) }}"/></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div>
+                                        <a class="btn btn-danger btn-block"  href="{{ path('image_delete',{'id':image.id}) }}">Delete</a>
+                                        <a class="btn btn-primary btn-block"  href="{{ path('image_approve',{'id':image.id}) }}">Approve</a>
+                                    </div>
+                                </td>
                             </tr>
                         </table>
                     </div>

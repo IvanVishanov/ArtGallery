@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+{% block body_id %}
+
+{% endblock %}
+
+{% block main %}
+    <div class="container body-content">
+        {% if count == 0 %}
+            <div class="text-center">
+                <h2>You did not upload any photos</h2>
+            </div>
+        {% else %}
+            <div class="text-center">
+                <h2>Your uploaded photos</h2>
+            </div>
+            {% if approvedCount > 0 %}
+                <div>
+                    <h4>Approved Images:</h4>
+                </div>
+                <div class="row">
+                    {% for image in approvedImages %}
+                        <div class="col-md-4 text-center">
+                            <table class="table table-bordered">
+                                <tr>
+                                    <td>
+                                        <div><h4>TITLE</h4></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><img src="{{ asset('uploads/images/' ~ image.image) }}"/></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div>
+                                            <a
+                                            class="btn btn-danger" style="width: 100%"
+                                            href="{{ path('image_delete', {'id': image.id}) }}">Delete
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            {% if notApprovedCount>0 %}
+                <div class="row">
+                    <div>
+                        <h4>Images in queue:</h4>
+                    </div>
+                    {% for image in notApprovedImages %}
+                        <div class="col-md-4 text-center">
+                            <table class="table table-bordered">
+                                <tr>
+                                    <td>
+                                        <div><h4>TITLE</h4></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><img src="{{ asset('uploads/images/' ~ image.image) }}"/></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div><a class="btn btn-danger" style="width: 100%"
+                                                href="{{ path('image_delete', {'id': image.id}) }}">Delete</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
+{% endblock %}
+

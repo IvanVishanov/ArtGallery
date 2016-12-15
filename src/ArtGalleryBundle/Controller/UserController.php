@@ -2,6 +2,7 @@
 
 namespace ArtGalleryBundle\Controller;
 
+use ArtGalleryBundle\Entity\Image;
 use ArtGalleryBundle\Entity\User;
 use ArtGalleryBundle\Form\UserType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -37,5 +38,30 @@ class UserController extends Controller
         return $this->render(
             'user/register.html.twig',
             array('form' => $form->createView()));
+    }
+    /**
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @Route("/profile", name="user_profile")
+     */
+    public function profileAction()
+    {
+        $userID = $this->getUser()->getId();
+        $user = $this->getUser();
+        $images = $this->getDoctrine()->getRepository(Image::class)->findBy( array('author' => $userID, 'deleted'=>false));
+        return $this->render("user/profile.html.twig", ['user'=>$user, 'images'=>$images]);
+    }
+    /**
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @Route("/user/images", name="user_images")
+     */
+    public function userImagesAction()
+    {
+        $userID = $this->getUser()->getId();
+        $approvedImages = $this->getDoctrine()->getRepository(Image::class)->findBy( array('author' => $userID, 'deleted'=>false,'approved'=>true));
+        $notApprovedImages = $this->getDoctrine()->getRepository(Image::class)->findBy( array('author' => $userID, 'deleted'=>false,'approved'=>false));
+        $count = count($approvedImages+$notApprovedImages);
+        $approvedCount = count($approvedImages);
+        $notApprovedCount = count($notApprovedImages);
+        return $this->render("user/images.html.twig", ['approvedImages'=>$approvedImages,'notApprovedImages'=>$notApprovedImages,'count'=>$count,'approvedCount'=>$approvedCount,'notApprovedCount'=>$notApprovedCount]);
     }
 }
