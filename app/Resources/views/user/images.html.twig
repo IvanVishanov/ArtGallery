@@ -20,15 +20,15 @@
                 </div>
                 <div class="row">
                     {% for image in approvedImages %}
-                        <div class="col-md-4 text-center">
-                            <table class="table table-bordered">
+                        <div class="col-md-4 text-center" style="height: 400px;margin-bottom: 1%">
+                            <table class="table table-bordered" style="height: 100%;">
                                 <tr>
                                     <td>
-                                        <div><h4>TITLE</h4></div>
+                                        <div><h4>{{ image.title }}</h4></div>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td><img src="{{ asset('uploads/images/' ~ image.image) }}"/></td>
+                                    <td style="height: 100%"><span style="vertical-align: middle;height: 100%;display: inline-block"></span><img style="max-width:340px;max-height:350px;vertical-align: middle;" src="{{ asset('uploads/images/' ~ image.image) }}" /></td>
                                 </tr>
                                 <tr>
                                     <td>
@@ -51,15 +51,15 @@
                         <h4>Images in queue:</h4>
                     </div>
                     {% for image in notApprovedImages %}
-                        <div class="col-md-4 text-center">
-                            <table class="table table-bordered">
+                        <div class="col-md-4 text-center" style="height: 400px;margin-bottom: 1%">
+                            <table class="table table-bordered" style="height: 100%">
                                 <tr>
                                     <td>
-                                        <div><h4>TITLE</h4></div>
+                                        <div><h4>{{ image.title }}</h4></div>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td><img src="{{ asset('uploads/images/' ~ image.image) }}"/></td>
+                                    <td style="height: 100%"><span style="vertical-align: middle;height: 100%;display: inline-block"></span><img style="max-width:340px;max-height:350px;vertical-align: middle;" src="{{ asset('uploads/images/' ~ image.image) }}" /></td>
                                 </tr>
                                 <tr>
                                     <td>
