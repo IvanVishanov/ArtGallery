@@ -4,16 +4,16 @@
     <div class="container body-content">
         <div class="row">
             {% for image in images %}
-                {% if image.approved and image.deleted == false %}
-                    <div class="col-md-4 text-center">
-                        <table class="table table-bordered">
+                {% if image.approved %}
+                    <div class="col-md-4 text-center" style="height: 350px;margin-bottom: 1%">
+                        <table class="table table-bordered" style="height: 100%">
                             <tr>
                                 <td>
-                                    <div><h4>TITLE</h4></div>
+                                    <div><h4>{{ image.title }}</h4></div>
                                 </td>
                             </tr>
                             <tr>
-                                <td><img src="{{ asset('uploads/images/' ~ image.image) }}"/></td>
+                                <td style="height: 100%"><span style="vertical-align: middle;height: 100%;display: inline-block"></span><img style="max-width:340px;max-height:350px;vertical-align: middle;" src="{{ asset('uploads/images/' ~ image.image) }}" /></td>
                             </tr>
                         </table>
                     </div>
@@ -21,4 +21,43 @@
             {% endfor %}
         </div>
     </div>
+{% endblock %}
+{% block myJavascripts %}
+<script>
+    $("[data-action='edit-title']").click(function () {
+        var $container = $(this).parents("[data-type='imageContainer']");
+
+        $container.find("[data-type='editTitle']").show();
+        $container.find("[data-type='viewTitle']").hide();
+    });
+
+    $("[data-action='cancel-edit-title']").click(function () {
+        var $container = $(this).parents("[data-type='imageContainer']");
+
+        $container.find("[data-type='editTitle']").hide();
+        $container.find("[data-type='viewTitle']").show();
+    });
+
+    $("[data-type='form-edit-title']").submit(function () {
+        var $container = $(this).parents("[data-type='imageContainer']");
+        var $title = $container.find("[data-type='title']");
+
+        $.post(
+            $(this).attr('action'),
+            $(this).serialize(),
+            function (data) {
+                showMessage($container.find("[data-type='message']"), data.code, data.message);
+
+                if(data.code == 'success') {
+                    $title.html(data.title);
+                    $container.find("[data-type='editTitle']").hide();
+                    $container.find("[data-type='viewTitle']").show();
+                }
+            },
+            'json'
+        );
+
+        return false;
+    });
+</script>
 {% endblock %}
