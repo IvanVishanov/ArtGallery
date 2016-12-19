@@ -11,10 +11,15 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
+/**
+ * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+ * Class ImageController
+ * @package ArtGalleryBundle\Controller
+ */
 class ImageController extends Controller
 {
     /**
-     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     *
      * @Route("/image/new", name="image_upload")
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -29,7 +34,7 @@ class ImageController extends Controller
             // $file stores the uploaded PDF file
             /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $file */
             $file = $image->getImage();
-            $image->setAuthor($this->getUser()->getId());
+            $image->setAuthor($this->getUser());
             $image->setApproved(false);
             // Generate a unique name for the file before saving it
             $imageName = md5(uniqid()) . '.' . $file->guessExtension();
@@ -57,6 +62,7 @@ class ImageController extends Controller
     }
 
     /**
+     *
      * @Route ("/image/approve/{id}" , name="image_approve")
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -73,6 +79,7 @@ class ImageController extends Controller
     }
 
     /**
+     *
      * @Route("/image/approve", name="image_viewApprove")
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -84,6 +91,7 @@ class ImageController extends Controller
     }
 
     /**
+     *
      * @Route ("/image/delete/{id}" , name="image_delete")
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -107,7 +115,6 @@ class ImageController extends Controller
 
         $id = intval($request->get('id'));
         $title = $request->get('title');
-
         try {
             $image = $this->getDoctrine()->getRepository(Image::class)->find($id);
 

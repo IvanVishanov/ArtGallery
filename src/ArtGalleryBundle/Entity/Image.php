@@ -35,7 +35,17 @@ class Image
     /**
      * @var int
      *
-     * @ORM\Column(name="author", type="integer")
+     * @ORM\Column(name="author_id", type="integer")
+     */
+    private $authorId;
+
+
+
+    /**
+     * @var User
+     *
+     * @ORM\ManyToOne(targetEntity="ArtGalleryBundle\Entity\User",inversedBy="images")
+     * @ORM\JoinColumn(name="author_id",referencedColumnName="id")
      */
     private $author;
 
@@ -82,22 +92,7 @@ class Image
         return $this->image;
     }
 
-    /**
-     * @return int
-     */
-    public function getAuthor()
-    {
-        return $this->author;
-    }
 
-    /**
-     * @param int $author
-     */
-    public function setAuthor(int $author)
-    {
-        $this->author = $author;
-        return $this;
-    }
 
     /**
      * @return boolean
@@ -129,6 +124,41 @@ class Image
     public function setTitle(string $title)
     {
         $this->title = $title;
+    }
+
+    /**
+     *  @return \ArtGalleryBundle\Entity\User $author
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+    /**
+     * @param \ArtGalleryBundle\Entity\User $author
+     *
+     * @return Image
+     */
+    public function setAuthor(User $author = null)
+    {
+        $this->author = $author;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAuthorId()
+    {
+        return $this->authorId;
+    }
+
+    /**
+     * @param int $authorId
+     */
+    public function setAuthorId(int $authorId)
+    {
+        $this->authorId = $authorId;
     }
 
 

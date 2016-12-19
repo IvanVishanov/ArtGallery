@@ -2,8 +2,10 @@
 
 namespace ArtGalleryBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * User
@@ -26,6 +28,7 @@ class User implements UserInterface
      * @var string
      *
      * @ORM\Column(name="nickName", type="string", length=255, unique=true)
+     * @Assert\NotBlank()
      */
     private $nickName;
 
@@ -33,6 +36,7 @@ class User implements UserInterface
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=255, unique=true)
+     * @Assert\NotBlank()
      */
     private $email;
 
@@ -40,6 +44,7 @@ class User implements UserInterface
      * @var string
      *
      * @ORM\Column(name="password", type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $password;
 
@@ -47,6 +52,7 @@ class User implements UserInterface
      * @var string
      *
      * @ORM\Column(name="firstName", type="string", length=255)
+     * 
      */
     private $firstName;
 
@@ -54,9 +60,17 @@ class User implements UserInterface
      * @var string
      *
      * @ORM\Column(name="lastName", type="string", length=255)
+     *
      */
     private $lastName;
 
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="ArtGalleryBundle\Entity\Image",mappedBy="author")
+     *
+     */
+    private $images;
 
     /**
      * Get id
@@ -244,5 +258,24 @@ class User implements UserInterface
     {
         // TODO: Implement eraseCredentials() method.
     }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getImages()
+    {
+        return $this->images;
+    }
+
+    function __toString()
+    {
+        return $this->nickName;
+    }
+
+    public function _construct()
+    {
+        $this->articles = new ArrayCollection();
+    }
+
 }
 

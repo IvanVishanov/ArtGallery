@@ -11,7 +11,8 @@
                 {% if image.approved == false %}
                     <div class="col-md-4 text-center" style="height: 445px;margin-bottom: 1%"
                          data-type="imageContainer">
-                        <div class="alert alert-dismissable" data-type="message" style="display: none;z-index:100; position:absolute; width:calc(100% - 30px);">
+                        <div class="alert alert-dismissable" data-type="message"
+                             style="display: none;z-index:100; position:absolute; width:calc(100% - 30px);">
                             <a href="#" class="close" aria-label="close">&times;</a>
                             <strong data-type="message-title"></strong> <span data-type="message-text"></span>
                         </div>
@@ -19,20 +20,22 @@
                             <tr>
                                 <td>
                                     <div data-type="viewTitle">
-                                        <h4 class="inline"><span data-type="title">{{ image.title }}</span><button class="glyphicon" style="float:right" data-action="edit-title">&#xe065;</button>
+                                        <h4 class="inline"><span data-type="title">{{ image.title }}</span>
+                                            <button class="glyphicon" style="float:right" data-action="edit-title">
+                                                &#xe065;</button>
                                         </h4>
                                     </div>
                                     <div data-type="editTitle" style="display: none">
                                         <form action="{{ path('image_updateTitle') }}" method="post"
                                               data-type="form-edit-title">
-                                            <input type="text" name="title" value="{{ image.title }}">
+                                            <input type="text" name="title">
                                             <input type="hidden" name="id" value="{{ image.id }}"/>
-                                                <button type="button" data-action="cancel-edit-title"
-                                                        class="glyphicon glyphicon-remove-circle"
-                                                      style="font-size: 20px"></button>
-                                                <button class="glyphicon glyphicon-ok-circle"
-                                                        type="submit"
-                                                      style="font-size: 20px"></button>
+                                            <button type="button" data-action="cancel-edit-title"
+                                                    class="glyphicon glyphicon-remove-circle"
+                                                    style="font-size: 20px"></button>
+                                            <button class="glyphicon glyphicon-ok-circle"
+                                                    type="submit"
+                                                    style="font-size: 20px"></button>
                                         </form>
                                     </div>
                                 </td>
@@ -61,10 +64,13 @@
     </div>
 {% endblock %}
 
-{% block myJavascripts %}
+{% block pageJavaScripts %}
     <script>
         $("[data-action='edit-title']").click(function () {
             var $container = $(this).parents("[data-type='imageContainer']");
+            var $title = $container.find("[data-type='title']");
+
+            $container.find("input[name='title']").val($title.html());
 
             $container.find("[data-type='editTitle']").show();
             $container.find("[data-type='viewTitle']").hide();
@@ -86,8 +92,7 @@
                 $(this).serialize(),
                 function (data) {
                     showMessage($container.find("[data-type='message']"), data.code, data.message);
-
-                    if(data.code == 'success') {
+                    if (data.code == 'success') {
                         $title.html(data.title);
                         $container.find("[data-type='editTitle']").hide();
                         $container.find("[data-type='viewTitle']").show();
@@ -95,7 +100,6 @@
                 },
                 'json'
             );
-
             return false;
         });
     </script>

@@ -14,8 +14,11 @@
                             </tr>
                             <tr>
                                 <td style="height: 100%">
-                                    <span style="vertical-align: middle;height: 100%;display: inline-block"></span><img data-type="image" style="max-width:340px;max-height:350px;vertical-align: middle;" src="{{ asset('uploads/images/' ~ image.image) }}" />
-
+                                    <span style="vertical-align: middle;height: 100%;display: inline-block"></span><img
+                                            data-type="image" data-toggle="{{ image.author }}"
+                                            data-title="{{ image.title }}"
+                                            style="max-width:340px;max-height:350px;vertical-align: middle;"
+                                            src="{{ asset('uploads/images/' ~ image.image) }}"/>
                                 </td>
                             </tr>
                         </table>
@@ -32,25 +35,34 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Modal Header</h4>
+                    <h4 id="title"></h4>
                 </div>
                 <div class="modal-body text-center" style="position: relative;">
                     <img class="center-block img-responsive" id="img01">
                 </div>
-                <div class="modal-footer">
-                    <span id="author"> </span><button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <div class="modal-footer" style="">
+                    <div id="author" style="float: left;">
+                    </div>
+                    <a id="fullSize" target="_blank" class="btn btn-success">
+                        FullSize
+                    </a>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        Close
+                    </button>
                 </div>
             </div>
 
         </div>
     </div>
 {% endblock %}
-{% block myJavascripts %}
-<script>
-    $("[data-type='image']").click(function () {
-        $("#img01").attr("src", $(this).attr("src"));
-        $("#myModal").modal();
-    });
-
-</script>
+{% block pageJavaScripts %}
+    <script>
+        $("[data-type='image']").click(function () {
+            $("#img01").attr("src", $(this).attr("src"));
+            $("#author").html("Author: " + $(this).attr("data-toggle"));
+            $("#fullSize").attr("href", $(this).attr("src"));
+            $("#title").html($(this).attr("data-title"));
+            $("#myModal").modal();
+        });
+    </script>
 {% endblock %}

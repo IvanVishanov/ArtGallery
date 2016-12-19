@@ -33,6 +33,11 @@
                     <ul class="nav navbar-nav navbar-right">
                         {% if app.user %}
                             <li>
+                                <a href="{{ path('admin_profiles') }}">
+                                    Profiles
+                                </a>
+                            </li>
+                            <li>
                                 <a href="{{ path('image_upload') }}">
                                     Upload Photo
                                 </a>
@@ -99,7 +104,7 @@
     <script src="{{ asset('js/main.js') }}"></script>
 {% endblock %}
 
-{% block myJavascripts %}{% endblock %}
+{% block pageJavaScripts %}{% endblock %}
 
 </body>
 </html>
