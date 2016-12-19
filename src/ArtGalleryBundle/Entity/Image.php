@@ -28,7 +28,7 @@ class Image
      *
      * @ORM\Column(name="image", type="string", length=255)
      *
-     * @Assert\File(mimeTypes={ "image/x-icon" })
+     * @Assert\File(mimeTypes={ "image/x-icon" ,"image/png"})
      */
     private $image;
 
@@ -47,11 +47,11 @@ class Image
     private $approved;
 
     /**
-     * @var boolean
+     * @var string
      *
-     * @ORM\Column(name="deleted", type="boolean")
+     * @ORM\Column(name="title", type="string")
      */
-    private $deleted;
+    private $title;
 
     public function getId()
     {
@@ -116,20 +116,21 @@ class Image
     }
 
     /**
-     * @return boolean
+     * @return string
      */
-    public function isDeleted()
+    public function getTitle()
     {
-        return $this->deleted;
+        return $this->title;
     }
 
     /**
-     * @param boolean $deleted
+     * @param string $title
      */
-    public function setDeleted(bool $deleted)
+    public function setTitle(string $title)
     {
-        $this->deleted = $deleted;
+        $this->title = $title;
     }
+
 
 }
 

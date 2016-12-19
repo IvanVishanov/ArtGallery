@@ -8,22 +8,48 @@
     <div class="container body-content">
         <div class="row">
             {% for image in images %}
-                {% if image.approved == false and image.deleted == false %}
-                    <div class="col-md-4 text-center">
-                        <table class="table table-bordered">
+                {% if image.approved == false %}
+                    <div class="col-md-4 text-center" style="height: 445px;margin-bottom: 1%"
+                         data-type="imageContainer">
+                        <div class="alert alert-dismissable" data-type="message" style="display: none;z-index:100; position:absolute; width:calc(100% - 30px);">
+                            <a href="#" class="close" aria-label="close">&times;</a>
+                            <strong data-type="message-title"></strong> <span data-type="message-text"></span>
+                        </div>
+                        <table class="table table-bordered" style="height: 100%">
                             <tr>
                                 <td>
-                                    <div><h4>TITLE</h4></div>
+                                    <div data-type="viewTitle">
+                                        <h4 class="inline"><span data-type="title">{{ image.title }}</span><button class="glyphicon" style="float:right" data-action="edit-title">&#xe065;</button>
+                                        </h4>
+                                    </div>
+                                    <div data-type="editTitle" style="display: none">
+                                        <form action="{{ path('image_updateTitle') }}" method="post"
+                                              data-type="form-edit-title">
+                                            <input type="text" name="title" value="{{ image.title }}">
+                                            <input type="hidden" name="id" value="{{ image.id }}"/>
+                                                <button type="button" data-action="cancel-edit-title"
+                                                        class="glyphicon glyphicon-remove-circle"
+                                                      style="font-size: 20px"></button>
+                                                <button class="glyphicon glyphicon-ok-circle"
+                                                        type="submit"
+                                                      style="font-size: 20px"></button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                             <tr>
-                                <td><img src="{{ asset('uploads/images/' ~ image.image) }}"/></td>
+                                <td style="height: 100%"><span
+                                            style="vertical-align: middle;height: 100%;display: inline-block"></span><img
+                                            style="max-width:340px;max-height:350px;vertical-align: middle;"
+                                            src="{{ asset('uploads/images/' ~ image.image) }}"/></td>
                             </tr>
                             <tr>
                                 <td>
                                     <div>
-                                        <a class="btn btn-danger btn-block"  href="{{ path('image_delete',{'id':image.id}) }}">Delete</a>
-                                        <a class="btn btn-primary btn-block"  href="{{ path('image_approve',{'id':image.id}) }}">Approve</a>
+                                        <a class="btn btn-danger btn-block"
+                                           href="{{ path('image_delete',{'id':image.id}) }}">Delete</a>
+                                        <a class="btn btn-primary btn-block"
+                                           href="{{ path('image_approve',{'id':image.id}) }}">Approve</a>
                                     </div>
                                 </td>
                             </tr>
@@ -33,4 +59,44 @@
             {% endfor %}
         </div>
     </div>
+{% endblock %}
+
+{% block myJavascripts %}
+    <script>
+        $("[data-action='edit-title']").click(function () {
+            var $container = $(this).parents("[data-type='imageContainer']");
+
+            $container.find("[data-type='editTitle']").show();
+            $container.find("[data-type='viewTitle']").hide();
+        });
+
+        $("[data-action='cancel-edit-title']").click(function () {
+            var $container = $(this).parents("[data-type='imageContainer']");
+
+            $container.find("[data-type='editTitle']").hide();
+            $container.find("[data-type='viewTitle']").show();
+        });
+
+        $("[data-type='form-edit-title']").submit(function () {
+            var $container = $(this).parents("[data-type='imageContainer']");
+            var $title = $container.find("[data-type='title']");
+
+            $.post(
+                $(this).attr('action'),
+                $(this).serialize(),
+                function (data) {
+                    showMessage($container.find("[data-type='message']"), data.code, data.message);
+
+                    if(data.code == 'success') {
+                        $title.html(data.title);
+                        $container.find("[data-type='editTitle']").hide();
+                        $container.find("[data-type='viewTitle']").show();
+                    }
+                },
+                'json'
+            );
+
+            return false;
+        });
+    </script>
 {% endblock %}

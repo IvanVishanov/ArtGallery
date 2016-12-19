@@ -47,7 +47,7 @@ class UserController extends Controller
     {
         $userID = $this->getUser()->getId();
         $user = $this->getUser();
-        $images = $this->getDoctrine()->getRepository(Image::class)->findBy( array('author' => $userID, 'deleted'=>false));
+        $images = $this->getDoctrine()->getRepository(Image::class)->findBy( array('author' => $userID));
         return $this->render("user/profile.html.twig", ['user'=>$user, 'images'=>$images]);
     }
     /**
@@ -57,11 +57,49 @@ class UserController extends Controller
     public function userImagesAction()
     {
         $userID = $this->getUser()->getId();
-        $approvedImages = $this->getDoctrine()->getRepository(Image::class)->findBy( array('author' => $userID, 'deleted'=>false,'approved'=>true));
-        $notApprovedImages = $this->getDoctrine()->getRepository(Image::class)->findBy( array('author' => $userID, 'deleted'=>false,'approved'=>false));
+        $approvedImages = $this->getDoctrine()->getRepository(Image::class)->findBy( array('author' => $userID,'approved'=>true));
+        $notApprovedImages = $this->getDoctrine()->getRepository(Image::class)->findBy( array('author' => $userID, 'approved'=>false));
         $count = count($approvedImages+$notApprovedImages);
         $approvedCount = count($approvedImages);
         $notApprovedCount = count($notApprovedImages);
-        return $this->render("user/images.html.twig", ['approvedImages'=>$approvedImages,'notApprovedImages'=>$notApprovedImages,'count'=>$count,'approvedCount'=>$approvedCount,'notApprovedCount'=>$notApprovedCount]);
+        return $this->render("user/images.html.twig", [
+            'approvedImages'=>$approvedImages,
+            'notApprovedImages'=>$notApprovedImages,
+            'count'=>$count,
+            'approvedCount'=>$approvedCount,
+            'notApprovedCount'=>$notApprovedCount]);
+    }
+
+    /**
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @Route("/user/editProfile", name="user_editProfile")
+     */
+    public function editProfileAction(Request $request)
+    {
+        $user = $this->getUser();
+        $form = $this->createForm(UserType::class,$user);
+        $currentPassword = $user->getPassword();
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+            if(empty($user->getPassword())){
+                $user->setPassword($currentPassword);
+            }
+            else{
+                $newPassword = $this->get('security.password_encoder')
+                    ->encodePassword($user, $user->getPassword());
+                $user->setPassword($newPassword);
+            }
+            $em=$this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+
+            return $this->redirectToRoute("user_profile");
+        }
+        return $this->render(
+            'user/editProfile.html.twig',
+            array('form' => $form->createView(),
+            'user' => $user
+            ));
     }
 }

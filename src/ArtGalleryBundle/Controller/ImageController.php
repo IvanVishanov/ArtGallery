@@ -109,7 +109,6 @@ class ImageController extends Controller
         $title = $request->get('title');
 
         try {
-
             $image = $this->getDoctrine()->getRepository(Image::class)->find($id);
 
             if (!$image) {
@@ -125,18 +124,18 @@ class ImageController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($image);
             $em->flush();
+
+            $response->setData([
+                'code' => 'success',
+                'message' => 'Image title updated successfully',
+                'title' => $title
+            ]);
         } catch (Exception $e) {
             $response->setData([
                 'code' => 'error',
                 'message' => $e->getMessage()
             ]);
         }
-
-        $response->setData([
-            'code' => 'success',
-            'message' => 'Image title updated successfully',
-            'title' => $title
-        ]);
 
         return $response;
     }

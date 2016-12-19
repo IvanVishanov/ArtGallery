@@ -13,7 +13,10 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td style="height: 100%"><span style="vertical-align: middle;height: 100%;display: inline-block"></span><img style="max-width:340px;max-height:350px;vertical-align: middle;" src="{{ asset('uploads/images/' ~ image.image) }}" /></td>
+                                <td style="height: 100%">
+                                    <span style="vertical-align: middle;height: 100%;display: inline-block"></span><img data-type="image" style="max-width:340px;max-height:350px;vertical-align: middle;" src="{{ asset('uploads/images/' ~ image.image) }}" />
+
+                                </td>
                             </tr>
                         </table>
                     </div>
@@ -21,43 +24,33 @@
             {% endfor %}
         </div>
     </div>
+    <!-- Modal -->
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Modal Header</h4>
+                </div>
+                <div class="modal-body text-center" style="position: relative;">
+                    <img class="center-block img-responsive" id="img01">
+                </div>
+                <div class="modal-footer">
+                    <span id="author"> </span><button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
 {% endblock %}
 {% block myJavascripts %}
 <script>
-    $("[data-action='edit-title']").click(function () {
-        var $container = $(this).parents("[data-type='imageContainer']");
-
-        $container.find("[data-type='editTitle']").show();
-        $container.find("[data-type='viewTitle']").hide();
+    $("[data-type='image']").click(function () {
+        $("#img01").attr("src", $(this).attr("src"));
+        $("#myModal").modal();
     });
 
-    $("[data-action='cancel-edit-title']").click(function () {
-        var $container = $(this).parents("[data-type='imageContainer']");
-
-        $container.find("[data-type='editTitle']").hide();
-        $container.find("[data-type='viewTitle']").show();
-    });
-
-    $("[data-type='form-edit-title']").submit(function () {
-        var $container = $(this).parents("[data-type='imageContainer']");
-        var $title = $container.find("[data-type='title']");
-
-        $.post(
-            $(this).attr('action'),
-            $(this).serialize(),
-            function (data) {
-                showMessage($container.find("[data-type='message']"), data.code, data.message);
-
-                if(data.code == 'success') {
-                    $title.html(data.title);
-                    $container.find("[data-type='editTitle']").hide();
-                    $container.find("[data-type='viewTitle']").show();
-                }
-            },
-            'json'
-        );
-
-        return false;
-    });
 </script>
 {% endblock %}
