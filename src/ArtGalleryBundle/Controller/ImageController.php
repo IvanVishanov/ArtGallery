@@ -12,14 +12,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
- * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+ *
  * Class ImageController
  * @package ArtGalleryBundle\Controller
  */
 class ImageController extends Controller
 {
     /**
-     *
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      * @Route("/image/new", name="image_upload")
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -62,7 +62,7 @@ class ImageController extends Controller
     }
 
     /**
-     *
+     * @Security("has_role('ROLE_MOD')")
      * @Route ("/image/approve/{id}" , name="image_approve")
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -79,7 +79,7 @@ class ImageController extends Controller
     }
 
     /**
-     *
+     * @Security("has_role('ROLE_MOD')")
      * @Route("/image/approve", name="image_viewApprove")
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -91,7 +91,7 @@ class ImageController extends Controller
     }
 
     /**
-     *
+     * @Security("has_role('ROLE_MOD')")
      * @Route ("/image/delete/{id}" , name="image_delete")
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -106,6 +106,7 @@ class ImageController extends Controller
     }
 
     /**
+     * @Security("has_role('ROLE_MOD')")
      * @Route ("/image/updateTitle" , name="image_updateTitle")
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */

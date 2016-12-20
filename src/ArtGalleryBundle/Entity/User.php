@@ -52,7 +52,7 @@ class User implements UserInterface
      * @var string
      *
      * @ORM\Column(name="firstName", type="string", length=255)
-     * 
+     *
      */
     private $firstName;
 
@@ -71,6 +71,17 @@ class User implements UserInterface
      *
      */
     private $images;
+
+    /**
+     * @var ArrayCollection
+     * @ORM\ManyToMany(targetEntity="ArtGalleryBundle\Entity\Role")
+     * @ORM\JoinTable(name="user_roles",
+     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="role_id",referencedColumnName="id")}
+     *      )
+     */
+    private $roles;
+
 
     /**
      * Get id
@@ -220,10 +231,23 @@ class User implements UserInterface
      */
     public function getRoles()
     {
-        // TODO: Implement getRoles() method.
-        return [];
+        $stringRoles = [];
+        foreach ($this->roles as $role) {
+
+            $stringRoles[] = $role ->getRole();
+        }
+        return $stringRoles;
     }
 
+    /**
+     * @param Role $role
+     *
+     * @return User
+     */
+    public function addRole(Role $role){
+        $this->roles[] = $role;
+        return $this;
+    }
     /**
      * Returns the salt that was originally used to encode the password.
      *
@@ -272,9 +296,10 @@ class User implements UserInterface
         return $this->nickName;
     }
 
-    public function _construct()
+    public function __construct()
     {
-        $this->articles = new ArrayCollection();
+        $this->roles = new ArrayCollection();
+        $this->images = new ArrayCollection();
     }
 
 }
