@@ -2,7 +2,9 @@
 
 namespace ArtGalleryBundle\Controller;
 
+use ArtGalleryBundle\Entity\Role;
 use ArtGalleryBundle\Entity\User;
+use ArtGalleryBundle\Form\UserEditType;
 use ArtGalleryBundle\Form\UserType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -47,11 +49,17 @@ class AdminController extends Controller
         if($user->isRole('ROLE_ADMIN') && $this->getUser()->isRole('ROLE_ADMIN')){
             return $this->redirectToRoute("gallery_index");
         }
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(UserEditType::class, $user);
         $currentPassword = $user->getPassword();
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
+            $roleRequest  = $user->getRoles();
+            $rolesRepository = $this->getDoctrine()->getRepository(Role::class);
+            $role=[];
+            $role[] = $rolesRepository->findOneBy(['name' =>$roleRequest[0]]);
+
+            $user->setRoles($role);
             if (empty($user->getPassword())) {
                 $user->setPassword($currentPassword);
             } else {

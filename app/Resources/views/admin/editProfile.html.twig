@@ -12,28 +12,33 @@
                     </tr>
                     <tr>
                         <th>Nickname</th>
-                        <td style="width: 200px"><input style="margin: 0;padding: 0;border: 0;background-color: transparent;height: 100%;width: 100%;" type="text"  value="{{ user.nickName }}"  placeholder="Nick Name" name="user[nickName]" required></td>
+                        <td style="width: 200px"><input style="margin: 0;padding: 0;border: 0;background-color: transparent;height: 100%;width: 100%;" type="text"  value="{{ user.nickName }}"  placeholder="Nick Name" name="user_edit[nickName]" required></td>
                     </tr>
                     <tr>
                         <th>Email</th>
-                        <td><input style="margin: 0;padding: 0;border: 0;border-color:transparent;background-color: transparent;height: 100%;width: 100%;"  value="{{ user.email }}" id="user_email" placeholder="Email" name="user[email]" required type="email"></td>
+                        <td><input style="margin: 0;padding: 0;border: 0;border-color:transparent;background-color: transparent;height: 100%;width: 100%;"  value="{{ user.email }}" id="user_email" placeholder="Email" name="user_edit[email]" required type="email"></td>
                     </tr>
                     <tr>
                         <th>Firstname</th>
-                        <td> <input style="margin: 0;padding: 0;border: 0;background-color: transparent;height: 100%;width: 100%;" type="text"  value="{{ user.firstName }}"  placeholder="First Name" name="user[firstName]" required></td>
+                        <td> <input style="margin: 0;padding: 0;border: 0;background-color: transparent;height: 100%;width: 100%;" type="text"  value="{{ user.firstName }}"  placeholder="First Name" name="user_edit[firstName]" required></td>
                     </tr>
                     <tr>
                         <th>Lastname</th>
-                        <td> <input  style="margin: 0;padding: 0;border: 0;background-color: transparent;height: 100%;width: 100%;" type="text"  value="{{ user.lastName }}"  placeholder="Last Name" name="user[lastName]" required></td>
+                        <td> <input  style="margin: 0;padding: 0;border: 0;background-color: transparent;height: 100%;width: 100%;" type="text"  value="{{ user.lastName }}"  placeholder="Last Name" name="user_edit[lastName]" required></td>
                     </tr>
                     <tr>
                         <th>Password</th>
-                        <td> <input style="margin: 0;padding: 0;border: 0;background-color: transparent;height: 100%;width: 100%;"   type="password" class="form-control" id="user_password_first" placeholder="Password" name="user[password][first]"></td>
+                        <td> <input style="margin: 0;padding: 0;border: 0;background-color: transparent;height: 100%;width: 100%;"   type="password" class="form-control" id="user_password_first" placeholder="Password" name="user_edit[password][first]"></td>
                     </tr>
                     <tr>
                         <th>Confirm Password</th>
-                        <td> <input style="margin: 0;padding: 0;border: 0;background-color: transparent;height: 100%;width: 100%;"  type="password" class="form-control" id="user_password_second" placeholder="Password" name="user[password][second]"></td>
+                        <td> <input style="margin: 0;padding: 0;border: 0;background-color: transparent;height: 100%;width: 100%;"  type="password" class="form-control" id="user_password_second" placeholder="Password" name="user_edit[password][second]"></td>
                     </tr>
+                    <tr>
+                        <th>Choose Role</th>
+                        <td>{{ form_widget(form.roles) }}</td>
+                    </tr>
+
                 </table>
 
                 <div class="text-center">
