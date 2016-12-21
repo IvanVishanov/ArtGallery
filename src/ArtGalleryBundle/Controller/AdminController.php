@@ -41,6 +41,12 @@ class AdminController extends Controller
     {
 
         $user = $this->getDoctrine()->getRepository(User::class)->find($id);
+        if($user->isRole('ROLE_OWNER')){
+            return $this->redirectToRoute("gallery_index");
+            }
+        if($user->isRole('ROLE_ADMIN') && $this->getUser()->isRole('ROLE_ADMIN')){
+            return $this->redirectToRoute("gallery_index");
+        }
         $form = $this->createForm(UserType::class, $user);
         $currentPassword = $user->getPassword();
         $form->handleRequest($request);

@@ -32,27 +32,35 @@
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
                         {% if app.user %}
-                            <li>
-                                <a href="{{ path('admin_profiles') }}">
-                                    Profiles
-                                </a>
-                            </li>
+
                             <li>
                                 <a href="{{ path('image_upload') }}">
                                     Upload Photo
                                 </a>
                             </li>
-                            <li>
-                                <a href="{{ path('image_viewApprove') }}">
-                                    Approve Photo
-                                </a>
-                            </li>
-                            <li>
-                                    <a class="dropdown-toggle" data-toggle="dropdown">User ({{ app.getUser().nickName }})<span class="caret"></span></a>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <li>
+                                    <a class="dropdown-toggle" data-toggle="dropdown">Admin
+                                        <span class="caret"></span></a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="{{ path('user_profile') }}">My Profile</a></li>
-                                        <li><a href="{{ path('user_images') }}">My Images</a></li>
+                                        <li><a href="{{ path('admin_profiles') }}">Profiles</a></li>
+                                        <li><a href="{{ path('image_viewApprove') }}">Approve Photo</a></li>
                                     </ul>
+                                </li>
+                            {% elseif is_granted('ROLE_MOD') %}
+                                <li>
+                                    <a href="{{ path('image_viewApprove') }}">
+                                        Approve Photo
+                                    </a>
+                                </li>
+                            {% endif %}
+                            <li>
+                                <a class="dropdown-toggle" data-toggle="dropdown">User ({{ app.getUser() }}
+                                    )<span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="{{ path('user_profile') }}">My Profile</a></li>
+                                    <li><a href="{{ path('user_images') }}">My Images</a></li>
+                                </ul>
                             </li>
                             <li>
                                 <a href="{{ path('security_logout') }}">

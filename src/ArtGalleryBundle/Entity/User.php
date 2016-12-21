@@ -302,5 +302,14 @@ class User implements UserInterface
         $this->images = new ArrayCollection();
     }
 
+    /**
+     *
+     * @return bool
+     */
+    public function isRole($role){
+
+       return in_array($role,$this->getRoles());
+
+    }
 }
 

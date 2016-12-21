@@ -14,27 +14,60 @@
                 </tr>
                 </thead>
                 {% for profile in user %}
-                    <tr>
-                        <td>
-                            {{ profile.nickName }}
-                        </td>
-                        <td>
-                            {{ profile.email }}
-                        </td>
-                        <td>
-                            {{ profile.firstName }}
-                        </td>
-                        <td>
-                            {{ profile.lastName }}
-                        </td>
+                    {% if app.user.isRole('ROLE_OWNER') %}
+                        {% if(profile.isRole('ROLE_OWNER')==false) %}
+                            <tr>
+                                <td>
+                                    {{ profile.nickName }}
+                                </td>
+                                <td>
+                                    {{ profile.email }}
+                                </td>
+                                <td>
+                                    {{ profile.firstName }}
+                                </td>
+                                <td>
+                                    {{ profile.lastName }}
+                                </td>
 
-                        <td class="text-center">
-                            <a class="btn btn-default btn-sm" href="{{ path('admin_editProfile',{'id':profile.id}) }}">Edit</a>
-                        </td>
-                        <td class="text-center">
-                            <a class="btn btn-danger btn-sm" href="{{ path('admin_deleteProfile', {'id': profile.id}) }}">Delete</a>
-                        </td>
-                    </tr>
+                                <td class="text-center">
+                                    <a class="btn btn-default btn-sm"
+                                       href="{{ path('admin_editProfile',{'id':profile.id}) }}">Edit</a>
+                                </td>
+                                <td class="text-center">
+                                    <a class="btn btn-danger btn-sm"
+                                       href="{{ path('admin_deleteProfile', {'id': profile.id}) }}">Delete</a>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% endif %}
+                    {% if app.user.isRole('ROLE_ADMIN') %}
+                        {% if(profile.isRole('ROLE_ADMIN')==false and profile.isRole('ROLE_OWNER')==false) %}
+                            <tr>
+                                <td>
+                                    {{ profile.nickName }}
+                                </td>
+                                <td>
+                                    {{ profile.email }}
+                                </td>
+                                <td>
+                                    {{ profile.firstName }}
+                                </td>
+                                <td>
+                                    {{ profile.lastName }}
+                                </td>
+
+                                <td class="text-center">
+                                    <a class="btn btn-default btn-sm"
+                                       href="{{ path('admin_editProfile',{'id':profile.id}) }}">Edit</a>
+                                </td>
+                                <td class="text-center">
+                                    <a class="btn btn-danger btn-sm"
+                                       href="{{ path('admin_deleteProfile', {'id': profile.id}) }}">Delete</a>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% endif %}
                 {% endfor %}
             </table>
         </div>
