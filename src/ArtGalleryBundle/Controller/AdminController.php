@@ -51,6 +51,7 @@ class AdminController extends Controller
         }
         $form = $this->createForm(UserEditType::class, $user);
         $currentPassword = $user->getPassword();
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
