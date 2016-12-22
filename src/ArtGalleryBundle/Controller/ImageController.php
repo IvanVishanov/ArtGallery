@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  *
@@ -31,8 +32,10 @@ class ImageController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // $file stores the uploaded PDF file
-            /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $file */
+
+            /**
+             * @var \Symfony\Component\HttpFoundation\File\UploadedFile $file
+             */
             $file = $image->getImage();
             $image->setAuthor($this->getUser());
             $image->setApproved(false);
@@ -53,7 +56,7 @@ class ImageController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($image);
             $em->flush();
-            return $this->redirectToRoute('gallery_index');
+            return $this->redirectToRoute('user_images');
         }
 
         return $this->render('image/upload.html.twig', array(
@@ -85,24 +88,36 @@ class ImageController extends Controller
      */
     public function viewApproveAction()
     {
-        $image = $this->getDoctrine()->getRepository(Image::class)->findAll();
-        return $this->render('image/approve.html.twig', ['images' => $image]);
+        $image = $this->getDoctrine()->getRepository(Image::class)->findBy(array('approved' => false));
+        $count = count($image);
+        return $this->render('image/approve.html.twig', ['images' => $image,
+            'count' => $count]);
 
     }
 
     /**
-     * @Security("has_role('ROLE_MOD')")
-     * @Route ("/image/delete/{id}" , name="image_delete")
+     * @Security("has_role('ROLE_USER')")
+     * @Route ("/image/delete/{route}/{id}/" , name="image_delete")
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function deleteAction($id)
+    public function deleteAction($id, $route)
     {
+
         $image = $this->getDoctrine()->getRepository(Image::class)->find($id);
-        unlink('uploads/images' . '/' . $image->getImage());
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($image);
-        $em->flush();
-        return $this->redirectToRoute('image_viewApprove');
+        if ($this->getUser()->isAuthor($image) or $this->getUser()->isRole('ROLE_ADMIN') or $this->getUser()->isRole('ROLE_OWNER')) {
+
+            unlink('uploads/images' . '/' . $image->getImage());
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($image);
+            $em->flush();
+        }
+        if ($route == 'approve') {
+            return $this->redirectToRoute('image_viewApprove');
+        }
+        else if($route == 'profile'){
+            return $this->redirectToRoute('user_images');
+        }
+        return $this->redirectToRoute('gallery_index');
     }
 
     /**

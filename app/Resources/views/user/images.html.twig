@@ -8,11 +8,11 @@
     <div class="container body-content">
         {% if count == 0 %}
             <div class="text-center">
-                <h2>You did not upload any photos</h2>
+                <h2>You did not upload any images</h2>
             </div>
         {% else %}
             <div class="text-center">
-                <h2>Your uploaded photos</h2>
+                <h2>Your uploaded images</h2>
             </div>
             {% if approvedCount > 0 %}
                 <div>
@@ -28,14 +28,14 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style="height: 100%"><span style="vertical-align: middle;height: 100%;display: inline-block"></span><img style="max-width:340px;max-height:350px;vertical-align: middle;" src="{{ asset('uploads/images/' ~ image.image) }}" /></td>
+                                    <td style="height: 100%"><span style="vertical-align: middle;height: 100%;display: inline-block"></span><img style="max-width:340px;max-height:260px;vertical-align: middle;" src="{{ asset('uploads/images/' ~ image.image) }}" /></td>
                                 </tr>
                                 <tr>
                                     <td>
                                         <div>
                                             <a
                                             class="btn btn-danger" style="width: 100%"
-                                            href="{{ path('image_delete', {'id': image.id}) }}">Delete
+                                            href="{{ path('image_delete', {'id': image.id, 'route': 'profile'}) }}">Delete
                                             </a>
                                         </div>
                                     </td>
@@ -59,12 +59,12 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style="height: 100%"><span style="vertical-align: middle;height: 100%;display: inline-block"></span><img style="max-width:340px;max-height:350px;vertical-align: middle;" src="{{ asset('uploads/images/' ~ image.image) }}" /></td>
+                                    <td style="height: 100%"><span style="vertical-align: middle;height: 100%;display: inline-block"></span><img style="max-width:340px;max-height:260px;vertical-align: middle;" src="{{ asset('uploads/images/' ~ image.image) }}" /></td>
                                 </tr>
                                 <tr>
                                     <td>
                                         <div><a class="btn btn-danger" style="width: 100%"
-                                                href="{{ path('image_delete', {'id': image.id}) }}">Delete</a>
+                                                href="{{ path('image_delete', {'id': image.id, 'route': 'profile'}) }}">Delete</a>
                                         </div>
                                     </td>
                                 </tr>

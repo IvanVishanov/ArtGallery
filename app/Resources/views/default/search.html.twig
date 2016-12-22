@@ -31,6 +31,7 @@
     <!-- Modal -->
     <div id="myModal" class="modal fade" role="dialog">
         <div class="modal-dialog">
+
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
@@ -43,6 +44,7 @@
                 <div class="modal-footer" style="">
                     <div id="author" style="float: left;">
                     </div>
+
                     {% if is_granted('ROLE_MOD') %}
                         <a id="delete" class="btn btn-danger">
                             Delete
@@ -56,6 +58,7 @@
                     </button>
                 </div>
             </div>
+
         </div>
     </div>
 {% endblock %}

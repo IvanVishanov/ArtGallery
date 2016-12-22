@@ -320,5 +320,10 @@ class User implements UserInterface
         $this->roles=$roles;
         return $this;
     }
+
+    public function isAuthor(Image $image)
+    {
+        return $this->getId() == $image->getAuthorId();
+    }
 }
 

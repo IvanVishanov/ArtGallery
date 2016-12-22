@@ -7,8 +7,12 @@
 {% block main %}
     <div class="container body-content">
         <div class="row">
+            {% if count == 0 %}
+            <div class="text-center">
+                <h2>Not any images to be approved</h2>
+            </div>
+            {% endif %}
             {% for image in images %}
-                {% if image.approved == false %}
                     <div class="col-md-4 text-center" style="height: 445px;margin-bottom: 1%"
                          data-type="imageContainer">
                         <div class="alert alert-dismissable" data-type="message"
@@ -43,14 +47,14 @@
                             <tr>
                                 <td style="height: 100%"><span
                                             style="vertical-align: middle;height: 100%;display: inline-block"></span><img
-                                            style="max-width:340px;max-height:350px;vertical-align: middle;"
+                                            style="max-width:340px;max-height:260px;vertical-align: middle;"
                                             src="{{ asset('uploads/images/' ~ image.image) }}"/></td>
                             </tr>
                             <tr>
                                 <td>
                                     <div>
                                         <a class="btn btn-danger btn-block"
-                                           href="{{ path('image_delete',{'id':image.id}) }}">Delete</a>
+                                           href="{{ path('image_delete', {'id': image.id, 'route': 'approve'}) }}">Delete</a>
                                         <a class="btn btn-primary btn-block"
                                            href="{{ path('image_approve',{'id':image.id}) }}">Approve</a>
                                     </div>
@@ -58,7 +62,6 @@
                             </tr>
                         </table>
                     </div>
-                {% endif %}
             {% endfor %}
         </div>
     </div>

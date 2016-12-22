@@ -28,7 +28,9 @@ class Image
      *
      * @ORM\Column(name="image", type="string", length=255)
      *
-     * @Assert\File(mimeTypes={ "image/x-icon" ,"image/png"})
+     * @Assert\File(
+     *     maxSize="10M",
+     *     mimeTypes={ "image/x-icon" ,"image/png","image/jpeg"})
      */
     private $image;
 

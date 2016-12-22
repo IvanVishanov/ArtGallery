@@ -29,13 +29,23 @@
                         <span class="icon-bar"></span>
                     </button>
                 </div>
+                {% if app.user and app.request.attributes.get('_route') == 'gallery_index' or app.request.attributes.get('_route') == 'search'%}
+                    <div class="col-sm-3">
+                        <form action="{{ path('search') }}" class="navbar-form navbar-collapse" role="search">
+                            <div class="form-group">
+                                <input type="search" class="form-control" style="height: 30px;margin-top:10px;"
+                                       placeholder="Search" name="search" id="search">
+                            </div>
+                        </form>
+                    </div>
+                {% endif %}
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
                         {% if app.user %}
 
                             <li>
                                 <a href="{{ path('image_upload') }}">
-                                    Upload Photo
+                                    Upload Image
                                 </a>
                             </li>
                             {% if is_granted('ROLE_ADMIN') %}
@@ -44,13 +54,13 @@
                                         <span class="caret"></span></a>
                                     <ul class="dropdown-menu">
                                         <li><a href="{{ path('admin_profiles') }}">Profiles</a></li>
-                                        <li><a href="{{ path('image_viewApprove') }}">Approve Photo</a></li>
+                                        <li><a href="{{ path('image_viewApprove') }}">Approve Image</a></li>
                                     </ul>
                                 </li>
                             {% elseif is_granted('ROLE_MOD') %}
                                 <li>
                                     <a href="{{ path('image_viewApprove') }}">
-                                        Approve Photo
+                                        Approve Image
                                     </a>
                                 </li>
                             {% endif %}
